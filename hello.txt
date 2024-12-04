@@ -1,0 +1,382 @@
+
+
+1) for loop
+...........................................
+for variable in value1 value2 value3 ... 
+do
+    # commands to be executed
+done
+..........
+for fruit in apple banana cherry
+do
+    echo "I like $fruit"
+done
+
+I like apple
+I like banana
+I like cherry
+ .......................
+for i in $(seq 1 5)
+do
+    echo "Number $i"
+done
+....................
+for ((i = 1; i <= 5; i++))
+do
+    echo "Number $i"
+done
+...............
+
+
+
+
+
+
+
+2)while loop 
+while [ condition ]
+do
+    # commands to be executed
+done
+
+
+..............
+filename="testfile.txt"
+while [ -e "$filename" ]
+do
+    echo "$filename exists!"
+    sleep 1  # wait for 1 second
+done
+..............
+while IFS= read -r line
+do
+    echo "Line: $line"
+done < "file.txt"
+
+
+
+
+
+
+
+
+3) if else....
+
+if [ condition ]
+then
+    # commands to execute if condition is true
+else
+    # commands to execute if condition is false
+fi
+
+
+str="hello"
+
+if [ "$str" = "hello" ]
+then
+    echo "String is hello"
+else
+    echo "String is not hello"
+fi
+
+num=10
+
+if [ $num -gt 15 ]
+then
+    echo "Number is greater than 15"
+elif [ $num -eq 10 ]
+then
+    echo "Number is equal to 10"
+else
+    echo "Number is less than 10"
+fi
+
+
+
+........................case statement............
+case "$variable" in
+    pattern1)
+        # commands for pattern1
+        ;;
+    pattern2)
+        # commands for pattern2
+        ;;
+    pattern3)
+        # commands for pattern3
+        ;;
+    *)
+        # commands for the default case (optional)
+        ;;
+esac
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Below are the most common acl commands and their usage.
+
+1. getfacl - Get the ACL of a file or directory
+The getfacl command is used to display the ACLs (Access Control Lists) of a file or directory.
+
+
+getfacl filename
+To view the ACLs for a directory:
+
+
+getfacl /path/to/directory
+You can view ACLs recursively for all files in a directory:
+
+bash
+Copy code
+getfacl -R /path/to/directory
+
+
+2. setfacl - Set or modify the ACL of a file or directory
+The setfacl command is used to set or modify ACLs for files and directories.
+
+Set permissions for a user:
+bash
+Copy code
+setfacl -m u:username:rwx filename
+This sets read, write, and execute (rwx) permissions for the user username on filename.
+
+Set permissions for a group:
+bash
+Copy code
+setfacl -m g:groupname:rx filename
+This sets read and execute (rx) permissions for the group groupname on filename.
+
+Set default ACL for a directory:
+Default ACLs are applied to newly created files and directories inside a directory. To set a default ACL:
+
+bash
+Copy code
+setfacl -m d:u:username:rw directoryname
+This sets the default ACL for user username to read and write (rw) permissions for all new files created inside directoryname.
+
+
+
+3. setfacl options
+-m: Modify or add a new ACL.
+-x: Remove an ACL.
+-b: Remove all ACLs (reset the ACL to default permissions).
+-d: Set default ACL for directories.
+-R: Apply the ACLs recursively.
+Example of setfacl usage:
+To give user alice read and write permissions on a file file.txt:
+
+bash
+Copy code
+setfacl -m u:alice:rw file.txt
+To give the group developers read and execute permissions on file.txt:
+
+bash
+Copy code
+setfacl -m g:developers:rx file.txt
+To remove the ACL for user alice on file.txt:
+
+bash
+Copy code
+setfacl -x u:alice file.txt
+To remove all ACLs on a file:
+
+bash
+Copy code
+setfacl -b filename
+To apply ACL recursively to all files in a directory:
+
+bash
+Copy code
+setfacl -R -m u:username:rwx /path/to/directory
+
+
+
+4. acl - Check if ACL is supported
+You can use the acl command to check whether ACL support is enabled on the filesystem.
+
+bash
+Copy code
+acl
+
+
+5. tune2fs - Enable or disable ACL support (on ext2/ext3/ext4 file systems)
+On ext2, ext3, or ext4 file systems, ACL support must be explicitly enabled. The tune2fs command can be used to enable or disable ACL support.
+
+To enable ACL support on a filesystem:
+bash
+Copy code
+tune2fs -o acl /dev/sda1
+To check if ACL support is enabled:
+bash
+Copy code
+tune2fs -l /dev/sda1 | grep "Default mount options"
+
+
+6. ls with ACL support - List ACLs with file listing
+To list file details along with ACLs, you can use ls with the -l and -d flags.
+
+bash
+
+ls -l filename
+If ACLs are set, it will show + at the end of the permissions (e.g., -rwxr-xr-x+).
+
+For directories, use:
+
+ls -ld directoryname
+
+
+
+
+
+
+
+
+
+
+
+
+
+.................................................................
+
+
+
+1. ls - List directory contents
+The ls command is used to list the files and directories in the current directory.
+
+bash
+Copy code
+ls
+To list all files, including hidden ones:
+
+bash
+Copy code
+ls -a
+To list files with detailed information:
+
+bash
+Copy code
+ls -l
+2. cd - Change directory
+The cd command is used to change the current working directory.
+
+bash
+Copy code
+cd /path/to/directory
+To go back to the home directory:
+
+bash
+Copy code
+cd ~
+To go up one directory:
+
+bash
+Copy code
+cd ..
+3. pwd - Print working directory
+The pwd command prints the current directory path you're in.
+
+bash
+Copy code
+pwd
+4. cp - Copy files or directories
+The cp command is used to copy files or directories.
+
+bash
+Copy code
+cp source.txt destination.txt
+To copy a directory and its contents:
+
+bash
+Copy code
+cp -r dir1/ dir2/
+5. mv - Move or rename files or directories
+The mv command is used to move or rename files and directories.
+
+To rename a file:
+
+bash
+Copy code
+mv oldname.txt newname.txt
+To move a file to a different directory:
+
+bash
+Copy code
+mv file.txt /path/to/destination/
+6. rm - Remove files or directories
+The rm command is used to remove files or directories.
+
+To delete a file:
+
+bash
+Copy code
+rm filename.txt
+To remove a directory and its contents recursively:
+
+bash
+Copy code
+rm -r directory_name
+7. touch - Create an empty file
+The touch command is used to create an empty file or update the timestamp of an existing file.
+
+bash
+Copy code
+touch newfile.txt
+8. cat - Concatenate and display file content
+The cat command is used to display the contents of a file.
+
+bash
+Copy code
+cat filename.txt
+To concatenate and display multiple files:
+
+bash
+Copy code
+cat file1.txt file2.txt
+9. grep - Search for patterns in files
+The grep command searches for patterns within files.
+
+To search for a string in a file:
+
+bash
+Copy code
+grep "pattern" filename.txt
+To search recursively in all files within a directory:
+
+bash
+Copy code
+grep -r "pattern" /path/to/directory
+10. man - View manual pages
+The man command is used to view the manual (help) pages of other commands.
+
+To view the manual of the ls command:
+
+bash
+Copy code
+man ls
+To search within the manual pages:
+
+bash
+Copy code
+man -k keyword
+
+
+........................................................
+.txt files modified in the last 10 days in the current directory and subdirectories, use:
+find . -type f -name "*.txt" -mtime -10
+
+
+
+
+
+
